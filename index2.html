@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff0e8">
+  <title>润润 · 个人主页</title>
+  <style>
+    :root {
+      --peach: #f6b99f;
+      --peach-deep: #d98268;
+      --peach-light: #fff0e8;
+      --cream: #fffaf6;
+      --ink: #59463f;
+      --muted: #967b70;
+      --white: #fffdfb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: linear-gradient(180deg, #fff0e8 0%, #fff8f3 44%, #fffaf6 100%);
+      font-family: "Nunito", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.75;
+    }
+    .page { width: min(880px, calc(100% - 36px)); margin: 0 auto; }
+    header { padding: 76px 0 48px; text-align: center; }
+    .hello { color: var(--peach-deep); font-size: .82rem; letter-spacing: .22em; font-weight: 800; }
+    .brand { display: inline-flex; align-items: center; justify-content: center; gap: 12px; margin: 10px 0 4px; }
+    h1 { margin: 0; font-size: clamp(2.7rem, 8vw, 4.3rem); line-height: 1.2; letter-spacing: .08em; color: #765348; }
+    .pixel-girl { width: 1.08em; height: 1.08em; image-rendering: pixelated; flex: 0 0 auto; }
+    .intro { margin: 12px auto 0; color: var(--muted); font-size: 1.05rem; }
+    main { padding-bottom: 28px; }
+    .panel {
+      margin: 18px 0; padding: 28px 32px; border: 1px solid #f8ded2;
+      border-radius: 22px; background: rgba(255,253,251,.88);
+      box-shadow: 0 10px 28px rgba(180, 112, 87, .07);
+    }
+    h2 { margin: 0 0 12px; color: var(--peach-deep); font-size: 1.25rem; }
+    p { margin: 0; }
+    .hobby-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .hobby {
+      padding: 6px 14px; border-radius: 999px; background: var(--peach-light);
+      color: #9b6654; font-size: .92rem; border: 1px solid #f7d9cc;
+    }
+    .contact a { color: #b96e58; text-decoration: none; border-bottom: 1px dashed #dfa18d; }
+    .contact a:hover { color: #8d4d3b; }
+    footer { padding: 30px 0 54px; text-align: center; color: var(--muted); font-size: .9rem; }
+    .thanks {
+      display: inline-block; margin-top: 14px; padding: 11px 25px; border: 0;
+      border-radius: 999px; background: var(--peach); color: #603f34;
+      font: inherit; font-weight: 800; cursor: pointer;
+      box-shadow: 0 6px 0 #e6a188; transition: transform .15s, box-shadow .15s;
+    }
+    .thanks:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #e6a188; }
+    .thanks:active { transform: translateY(3px); box-shadow: 0 3px 0 #e6a188; }
+    @media (max-width: 560px) {
+      header { padding: 58px 0 32px; }
+      .panel { padding: 23px 21px; border-radius: 18px; }
+      .intro { font-size: .96rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="hello">HELLO, NICE TO MEET YOU</div>
+      <div class="brand">
+        <h1>润润</h1>
+        <svg class="pixel-girl" viewBox="0 0 32 32" role="img" aria-label="扎着马尾辫的像素风女孩" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+          <!-- ponytail and hair -->
+          <rect x="21" y="5" width="5" height="5" fill="#704638"/>
+          <rect x="24" y="9" width="5" height="5" fill="#704638"/>
+          <rect x="26" y="13" width="4" height="5" fill="#704638"/>
+          <rect x="22" y="17" width="5" height="4" fill="#704638"/>
+          <rect x="9" y="5" width="13" height="4" fill="#704638"/>
+          <rect x="7" y="9" width="17" height="4" fill="#704638"/>
+          <rect x="8" y="13" width="16" height="8" fill="#704638"/>
+          <rect x="10" y="20" width="12" height="3" fill="#704638"/>
+          <!-- face -->
+          <rect x="10" y="10" width="12" height="10" fill="#ffd9bd"/>
+          <rect x="8" y="12" width="2" height="6" fill="#ffd9bd"/>
+          <rect x="22" y="12" width="2" height="6" fill="#ffd9bd"/>
+          <rect x="12" y="14" width="2" height="2" fill="#594039"/>
+          <rect x="19" y="14" width="2" height="2" fill="#594039"/>
+          <rect x="15" y="17" width="3" height="1" fill="#d98268"/>
+          <!-- hair fringe -->
+          <rect x="9" y="8" width="13" height="3" fill="#704638"/>
+          <rect x="11" y="10" width="3" height="2" fill="#704638"/>
+          <rect x="17" y="10" width="4" height="2" fill="#704638"/>
+          <!-- body and outfit -->
+          <rect x="11" y="22" width="10" height="3" fill="#f2a88f"/>
+          <rect x="9" y="25" width="14" height="5" fill="#e98f7d"/>
+          <rect x="12" y="25" width="3" height="5" fill="#fff0e8"/>
+          <rect x="18" y="25" width="3" height="5" fill="#fff0e8"/>
+          <!-- tiny shoes -->
+          <rect x="8" y="30" width="6" height="2" fill="#704638"/>
+          <rect x="19" y="30" width="6" height="2" fill="#704638"/>
+          <!-- hair tie -->
+          <rect x="22" y="7" width="3" height="2" fill="#f6b99f"/>
+        </svg>
+      </div>
+      <p class="intro">把平凡的日子，过成喜欢的模样。🌷</p>
+    </header>
+
+    <main>
+      <section class="panel">
+        <h2>关于我</h2>
+        <p>你好呀，我是润润！欢迎来到我的小小个人空间。这里记录我的日常、想法和生活中的可爱瞬间。</p>
+      </section>
+
+      <section class="panel">
+        <h2>我的爱好</h2>
+        <p>喜欢发现生活里的小美好，也享受慢慢探索新事物的过程。</p>
+        <div class="hobby-list">
+          <span class="hobby">🎧 听音乐</span>
+          <span class="hobby">📚 阅读</span>
+          <span class="hobby">📷 拍照</span>
+          <span class="hobby">🎨 做手账</span>
+          <span class="hobby">🌿 散步</span>
+        </div>
+      </section>
+
+      <section class="panel contact">
+        <h2>联系方式</h2>
+        <p>欢迎来和我打招呼！</p>
+        <p style="margin-top:8px;">邮箱：<a href="mailto:hello@example.com">hello@example.com</a></p>
+        <p style="margin-top:6px;color:#a58b80;font-size:.9rem;">（记得把这里替换成你自己的联系方式哦）</p>
+      </section>
+    </main>
+
+    <footer>
+      <div>感谢你来到这里，愿你今天也有好心情 ☁️</div>
+      <button class="thanks" type="button" onclick="alert('谢谢访问')">点我一下</button>
+      <div style="margin-top:22px;">© <span id="year"></span> 润润的小世界</div>
+    </footer>
+  </div>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
