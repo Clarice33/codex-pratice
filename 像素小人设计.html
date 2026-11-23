@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fff0e8">
+<title>像素小人设计</title>
+<style>
+:root{--peach:#fff0e8;--peach-deep:#f6cbb7;--ink:#514039;--green:#d8ebce;--green-strong:#b8d7a8;--paper:#fffaf6}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:"Trebuchet MS","PingFang SC","Microsoft YaHei",sans-serif;background:radial-gradient(ellipse at 15% 15%,#fff9f3 0,transparent 35%),radial-gradient(ellipse at 90% 80%,#f8d9c9 0,transparent 32%),var(--peach)}
+main{width:min(850px,calc(100% - 32px));margin:auto;padding:52px 0 60px;text-align:center}
+h1{font-family:Georgia,"Songti SC",serif;font-size:clamp(2rem,6vw,3.5rem);letter-spacing:.02em;margin:8px 0 30px}
+.stage{position:relative;isolation:isolate;display:grid;place-items:center;min-height:410px;overflow:hidden;border:1px solid #f3d7c8;border-radius:30px;background:rgba(255,250,246,.77);box-shadow:0 18px 60px #ac70501a}
+.stage:before{content:"";position:absolute;z-index:-1;width:270px;height:270px;border-radius:50%;background:#fae4d7}
+#character{width:min(340px,80vw);height:min(340px,80vw);image-rendering:pixelated;filter:drop-shadow(0 12px 0 #a5573210);transition:transform .24s}
+#character.pop{animation:pop .55s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{40%{transform:translateY(-18px) scale(1.08)}70%{transform:translateY(5px) scale(.97)}}
+#confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.buttons{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:25px auto 0}
+button{border:1px solid #bad2ae;background:linear-gradient(180deg,#e9f5e2,#d6ebce);color:#405c3a;border-radius:999px;padding:12px 24px;font-size:1rem;font-weight:700;letter-spacing:.04em;cursor:pointer;box-shadow:0 5px 0 #bad2ae;transition:transform .15s,box-shadow .15s,background .15s}
+button:hover{background:#cde5c3;transform:translateY(-2px);box-shadow:0 7px 0 #bad2ae}
+button:active{transform:translateY(3px);box-shadow:0 2px 0 #bad2ae}
+button:focus-visible{outline:3px solid #758f68;outline-offset:4px}
+.hint{color:#987f72;font-size:.9rem;margin:17px 0 0}
+@media(max-width:520px){main{padding-top:34px}.stage{min-height:350px;border-radius:23px}.buttons{gap:10px}button{padding:11px 18px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main>
+<h1>Design your Pixel Character</h1>
+<section class="stage" aria-label="像素小人展示区域">
+<svg id="character" viewBox="0 0 64 64" role="img" aria-label="穿白色衣服的像素小人" shape-rendering="crispEdges"></svg>
+<canvas id="confetti" aria-hidden="true"></canvas>
+</section>
+<nav class="buttons" aria-label="选择像素小人">
+<button type="button" data-person="xurun">徐润</button><button type="button" data-person="zhuyijie">朱伊洁</button><button type="button" data-person="zhoukeyi">周可伊</button><button type="button" data-person="zhangmin">张敏</button>
+</nav>
+<p class="hint">选择一位角色，看看像素小人的新造型 ✦</p>
+</main>
+<script>
+const svg=document.querySelector("#character");
+const palettes={
+base:{skin:"#f2d0b7",hair:"#49352d",shirt:"#fffdfb",pants:"#708079",shoe:"#d48e76"},
+xurun:{skin:"#f7decf",hair:"#17151b",hair2:"#17151b",shirt:"#d6a72e",pants:"#b78225",shoe:"#8b354e",glasses:"#9d3c72",eye:"#33232c",mouth:"#955168",gold:"#f5d15d",lip:"#a44359"},
+zhuyijie:{skin:"#d6a27e",hair:"#191b20",shirt:"#407fab",pants:"#282b35",shoe:"#405163",glasses:"#22232b",eye:"#211b19",mouth:"#7a3840",print:"#e7f4ef"},
+zhoukeyi:{skin:"#edc4a4",hair:"#604334",shirt:"#9b748f",pants:"#586b91",shoe:"#483d4b",glasses:"#58485d",eye:"#32252a",mouth:"#ab6672"},
+zhangmin:{skin:"#fae7d9",hair:"#292a2e",gray:"#b6b5b4",shirt:"#669ac5",pants:"#868994",shoe:"#508ab2",glasses:"#adb4b6",eye:"#3a3333",mouth:"#ba5862",flower:"#e783aa",flower2:"#f5adca",wrap:"#e5ae8d"}
+};
+const pixels=(a,x,y,w,h,c)=>{a.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+c+'"/>')};
+function makePerson(key){
+const p=palettes[key],a=[];
+const tall=key==="xurun";
+const short=key==="zhangmin"||key==="zhuyijie";
+const headW=key==="zhangmin"?22:key==="zhuyijie"?24:26;
+const hx=(64-headW)/2,hy=key==="zhangmin"?12:10;
+const torsoY=hy+headW+2, torsoH=tall?12:10, legY=torsoY+torsoH;
+const legH=short?9:11;
+if(key==="xurun"){
+pixels(a,hx-2,hy+2,headW+4,headW+4,p.hair);
+pixels(a,hx-2,hy+2,headW+4,headW+4,p.hair2);
+pixels(a,hx,hy+5,headW,headW-2,p.skin);
+pixels(a,hx-1,hy+5,1,headW-7,p.hair);pixels(a,hx+headW,hy+5,1,headW-7,p.hair);
+pixels(a,hx-3,hy+18,3,22,p.hair);pixels(a,hx+headW,hy+18,3,22,p.hair);
+pixels(a,hx-3,hy+37,4,5,p.hair);pixels(a,hx+headW-1,hy+37,4,5,p.hair);
+}else{
+pixels(a,hx-1,hy,headW+2,headW+3,p.hair);
+pixels(a,hx,hy+5,headW,headW-3,p.skin);
+pixels(a,hx-1,hy+2,headW+2,5,p.hair);
+if(key==="zhuyijie"){pixels(a,hx-2,hy+6,3,headW-8,p.hair);pixels(a,hx+headW-1,hy+6,3,headW-8,p.hair)}
+if(key==="zhangmin"){pixels(a,hx-1,hy+1,headW+2,3,p.gray);pixels(a,hx+3,hy,4,2,p.gray);pixels(a,hx+headW-7,hy,5,2,p.gray)}
+}
+pixels(a,15,torsoY+2,7,torsoH-2,p.shirt);pixels(a,42,torsoY+2,7,torsoH-2,p.shirt);
+pixels(a,22,torsoY,20,torsoH,p.shirt);
+if(key==="xurun"){pixels(a,29,torsoY,6,torsoH,p.gold);pixels(a,26,torsoY+4,12,3,p.gold);pixels(a,30,torsoY+6,4,2,"#fff0a0")}
+if(key==="zhuyijie"){pixels(a,29,torsoY+3,8,4,p.print);pixels(a,30,torsoY+3,6,1,"#345d46");pixels(a,31,torsoY+5,4,1,"#345d46")}
+if(key==="zhangmin"){pixels(a,28,torsoY+1,2,7,"#dce8ee");pixels(a,34,torsoY+1,2,7,"#dce8ee")}
+if(key==="zhoukeyi"){pixels(a,29,torsoY+2,6,4,"#e9c48c")}
+pixels(a,24,legY,8,legH,p.pants);pixels(a,33,legY,8,legH,p.pants);
+pixels(a,23,legY+legH,9,3,p.shoe);pixels(a,33,legY+legH,10,3,p.shoe);
+const eyes=key==="xurun"?2:key==="zhuyijie"?3:2;
+if(key==="zhuyijie"){
+pixels(a,hx+5,hy+11,5,6,p.eye);pixels(a,hx+headW-10,hy+11,5,6,p.eye);
+pixels(a,hx+6,hy+12,2,3,"#fff");pixels(a,hx+headW-9,hy+12,2,3,"#fff");
+pixels(a,hx+8,hy+9,2,2,p.hair);pixels(a,hx+headW-10,hy+9,2,2,p.hair);
+pixels(a,hx+8,hy+20,9,3,p.mouth);
+}else{
+pixels(a,hx+5,hy+13,4,2,p.eye);pixels(a,hx+headW-9,hy+13,4,2,p.eye);
+if(key==="xurun"){pixels(a,hx+4,hy+11,6,1,p.hair);pixels(a,hx+headW-10,hy+11,6,1,p.hair);for(let i=0;i<4;i++){pixels(a,hx+4+i*2,hy+10,1,2,p.eye);pixels(a,hx+headW-10+i*2,hy+10,1,2,p.eye)}}
+if(key==="zhangmin"){pixels(a,hx+5,hy+12,5,3,p.eye);pixels(a,hx+headW-10,hy+12,5,3,p.eye);pixels(a,hx+9,hy+19,5,1,p.mouth);pixels(a,hx+7,hy+17,2,1,"#df9b91");pixels(a,hx+headW-9,hy+17,2,1,"#df9b91")}
+if(key==="xurun"||key==="zhoukeyi")pixels(a,hx+9,hy+21,8,1,p.mouth);
+if(key==="xurun"||key==="zhuyijie"){
+const gc=p.glasses;
+if(key==="xurun"){pixels(a,hx+3,hy+10,8,1,gc);pixels(a,hx+3,hy+11,1,6,gc);pixels(a,hx+10,hy+11,1,6,gc);pixels(a,hx+3,hy+16,8,1,gc);pixels(a,hx+headW-11,hy+10,8,1,gc);pixels(a,hx+headW-11,hy+11,1,6,gc);pixels(a,hx+headW-4,hy+11,1,6,gc);pixels(a,hx+headW-11,hy+16,8,1,gc);pixels(a,hx+11,hy+13,4,1,gc)}
+else{pixels(a,hx+4,hy+10,8,1,gc);pixels(a,hx+4,hy+11,1,7,gc);pixels(a,hx+11,hy+11,1,7,gc);pixels(a,hx+4,hy+17,8,1,gc);pixels(a,hx+headW-12,hy+10,8,1,gc);pixels(a,hx+headW-12,hy+11,1,7,gc);pixels(a,hx+headW-5,hy+11,1,7,gc);pixels(a,hx+headW-12,hy+17,8,1,gc);pixels(a,hx+11,hy+13,5,1,gc)}
+}
+}
+if(key==="zhangmin"){
+for(const [fx,fy] of [[8,16],[12,14],[16,18],[10,21],[15,23],[19,15],[9,26],[18,26]]){pixels(a,fx,fy,3,3,p.flower);pixels(a,fx+1,fy+1,1,1,p.flower2)}
+pixels(a,7,28,16,3,p.wrap);pixels(a,9,31,12,8,p.wrap);pixels(a,13,27,4,6,"#f4c3a4");pixels(a,11,39,8,2,"#b98a72")
+}
+return '<g id="pixel-art">'+a.join("")+'</g>'
+}
+function render(key){
+svg.innerHTML=makePerson(key);
+const names={base:"穿白色衣服的像素小人",xurun:"徐润，金色旗袍和紫红色眼镜",zhuyijie:"朱伊洁，蓝色冲锋衣和黑框眼镜",zhoukeyi:"周可伊，紫色上衣的像素小人",zhangmin:"张敏，手捧粉色月季的像素小人"};
+svg.setAttribute("aria-label",names[key]);
+}
+render("base");
+const canvas=document.querySelector("#confetti"),ctx=canvas.getContext("2d");
+let particles=[],frame=0;
+const colors=["#ff6e91","#ffd166","#78d8ca","#9f8bff","#ff9f68","#a7df86","#ffffff"];
+function resize(){const r=canvas.getBoundingClientRect(),d=window.devicePixelRatio||1;canvas.width=r.width*d;canvas.height=r.height*d;ctx.setTransform(d,0,0,d,0,0)}
+new ResizeObserver(resize).observe(canvas);
+function celebrate(){
+resize();const r=canvas.getBoundingClientRect();particles=[];
+for(let burst=0;burst<3;burst++){const ox=r.width*(.28+Math.random()*.44),oy=r.height*(.24+Math.random()*.36);for(let i=0;i<44;i++){const angle=Math.PI*2*i/44+Math.random()*.12,speed=2+Math.random()*5;particles.push({x:ox,y:oy,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:48+Math.random()*28,max:76,size:3+Math.random()*4,color:colors[Math.random()*colors.length|0],spin:Math.random()*6,shape:Math.random()<.35?"circle":"rect"})}}
+frame=0;function draw(){const d=window.devicePixelRatio||1;ctx.clearRect(0,0,canvas.width/d,canvas.height/d);particles=particles.filter(p=>p.life-->0);for(const p of particles){p.x+=p.vx;p.y+=p.vy;p.vy+=.08;p.vx*=.99;p.spin+=.12;ctx.globalAlpha=Math.max(0,p.life/p.max);ctx.fillStyle=p.color;if(p.shape==="circle"){ctx.beginPath();ctx.arc(p.x,p.y,p.size*.48,0,Math.PI*2);ctx.fill()}else{ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.spin);ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*1.5);ctx.restore()}}ctx.globalAlpha=1;if(particles.length&&frame++<130)requestAnimationFrame(draw);else ctx.clearRect(0,0,canvas.width/d,canvas.height/d)}requestAnimationFrame(draw);playPop()}
+let audio;
+function playPop(){try{audio??=new(window.AudioContext||window.webkitAudioContext)();if(audio.state==="suspended")audio.resume();const now=audio.currentTime;for(let i=0;i<4;i++){const osc=audio.createOscillator(),gain=audio.createGain();osc.type="sine";osc.frequency.setValueAtTime(760+i*170,now+i*.065);osc.frequency.exponentialRampToValueAtTime(180,now+i*.065+.16);gain.gain.setValueAtTime(.0001,now+i*.065);gain.gain.exponentialRampToValueAtTime(.11,now+i*.065+.012);gain.gain.exponentialRampToValueAtTime(.0001,now+i*.065+.18);osc.connect(gain).connect(audio.destination);osc.start(now+i*.065);osc.stop(now+i*.065+.19)}}catch(e){}}
+document.querySelectorAll("button[data-person]").forEach(button=>button.addEventListener("click",()=>{render(button.dataset.person);const art=document.querySelector("#character");art.classList.remove("pop");void art.getBoundingClientRect();art.classList.add("pop");celebrate()}));
+</script>
+</body>
+</html>
